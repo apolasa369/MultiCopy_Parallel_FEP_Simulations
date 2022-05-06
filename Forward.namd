@@ -1,6 +1,6 @@
-##########################################################################
-# namd configuration for non-interacting multiple-copy simulations For FEP
-##########################################################################
+##############################################################################################
+# namd configuration for non-interacting multiple-copy simulations For FEP Forward simulation 
+##############################################################################################
 
 set replica_id [myReplica]
 

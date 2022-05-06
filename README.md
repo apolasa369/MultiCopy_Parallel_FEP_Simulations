@@ -1,1 +1,1 @@
-# MultiCopy_Parelle_FEP_Simulations
+# MultiCopy_Parallel_FEP_Simulations

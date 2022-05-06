@@ -1,0 +1,143 @@
+# equilibration in water1
+###################################################
+LangevinPistonDecay     25
+LangevinPistonTemp      300
+# MD SETUP              0.0 0.0 0.0
+useGroupPressure        yes
+timestep                2.0
+##numsteps                1 
+# SPACE PARTITIONING
+
+# FLEXIBLE CELL         hydrogen
+hgroupcutoff            2.8
+useflexiblecell         no
+margin                  1.0
+
+# INPUT
+# CUT-OFFS
+structure              input/solvate.$replica_id.psf 
+switching               on
+parameters              ../par_all22_prot_metals.inp
+parameters              ../par_all36_carb.prm
+parameters              ../par_all36_cgenff.prm
+parameters              ../par_all36_lipid.prm
+parameters              ../par_all36m_prot.prm
+parameters              ../par_all36_na.prm
+paraTypeCharmm          on
+
+coordinates             input/solvate.$replica_id.pdb
+nonbondedFreq           1
+# OUTPUT
+
+outputenergies          100
+outputtiming            100
+outputpressure          100led1-4
+binaryoutput            yes
+
+restartfreq             100
+binaryrestart           yes
+
+XSTFreq                 100
+
+
+# DCDKE
+
+DCDfreq                 500
+rigidtolerance          0.000001
+rigiditerations         400
+:
+# PME
+
+PME                     yes
+PMETolerance            10e-6
+PMEInterpOrder          4
+
+PMEGridSizeX            120
+PMEGridSizeY            120
+PMEGridSizeZ            120
+
+
+# WRAP WATER FOR OUTPUT
+
+wrapAll                 on
+
+
+# CONSTANT-T
+
+langevin                on
+langevinTemp            300.0
+langevinDamping         1.0
+
+
+# CONSTANT-P
+
+LangevinPiston          on
+LangevinPistonTarget    1
+LangevinPistonPeriod    75
+LangevinPistonDecay     25
+LangevinPistonTemp      300
+StrainRate              0.0 0.0 0.0
+useGroupPressure        yes
+
+
+# SPACE PARTITIONING
+
+splitpatch              hydrogen
+hgroupcutoff            2.8
+stepspercycle           10
+margin                  1.0
+
+
+# CUT-OFFS
+
+switching               on
+switchdist              10.0
+cutoff                  12.0
+pairlistdist            12.0
+limitDist                1.3
+
+
+# RESPA 
+
+fullElectFrequency      2
+nonbondedFreq           1
+
+
+# 1-4 NON-BONDED
+
+exclude                 scaled1-4
+1-4scaling              1.0
+
+
+# COM
+
+commotion               no
+
+
+# SHAKE
+
+rigidbonds              all
+rigidtolerance          0.000001
+rigiditerations         400
+
+
+# COLVARS SECTION
+
+colvars                 on 
+colvarsConfig           COMCOM_$replica_id.in
+
+
+# FEP PARAMETERS
+
+source                  fep.tcl
+                        
+alch                    on
+alchType                FEP
+alchFile                input/solvate.$replica_id.fep
+alchCol                 B
+alchOutFreq             10
+
+alchElecLambdaStart     0.1
+alchVdwLambdaEnd        1.0
+alchVdwShiftCoeff       5.0
+alchdecouple            on
